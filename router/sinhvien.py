@@ -14,6 +14,8 @@ class SinhVienSchema(BaseModel):
 
 @router.post("/sinhvien")
 def create_sinhvien(sinhvien: SinhVienSchema,token: str=Header(None)):
+    if not token:
+     return {"message": "Token không hợp lệ"}
     token= token.replace("Bearer ","")
     if not verify_token(token):
         return {"message":"Token không hợp lệ"}
@@ -26,6 +28,8 @@ def create_sinhvien(sinhvien: SinhVienSchema,token: str=Header(None)):
 
 @router.get("/sinhvien/{id}")
 def get_sinhvien(id: int ,token: str=Header(None)):
+    if not token:
+     return {"message": "Token không hợp lệ"}
     token= token.replace("Bearer ","")
     if not verify_token(token):
         return {"message":"Token không hợp lệ"}
@@ -36,6 +40,8 @@ def get_sinhvien(id: int ,token: str=Header(None)):
 
 @router.get("/sinhvien")
 def get_allsinhvien(token: str=Header(None)):
+    if not token:
+     return {"message": "Token không hợp lệ"}
     token= token.replace("Bearer ","")
     if not verify_token(token):
         return {"message":"Token không hợp lệ"}
@@ -45,6 +51,8 @@ def get_allsinhvien(token: str=Header(None)):
     return {"sinhviens":sinhviens}
 @router.put("/sinhvien/update/{id}")
 def update_sinhvien(id: int, sinhvien: SinhVienSchema, token: str=Header(None)):
+    if not token:
+        return {"message": "Token không hợp lệ"}
     token = token.replace("Bearer ", "")
     if not verify_token(token):
         return {"message": "Token không hợp lệ"}
@@ -60,6 +68,8 @@ def update_sinhvien(id: int, sinhvien: SinhVienSchema, token: str=Header(None)):
 
 @router.delete("/sinhvien/delete/{id}")
 def delete_sinhvien(id: int, token: str=Header(None)):
+    if not token:
+        return {"message": "Token không hợp lệ"}
     token = token.replace("Bearer ", "")
     if not verify_token(token):
         return {"message": "Token không hợp lệ"}
