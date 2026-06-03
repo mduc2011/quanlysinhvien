@@ -1,5 +1,5 @@
 from model import sinhvien as SinhVien
-from fastapi import APIRouter
+from fastapi import APIRouter, Header
 from database import SessionLocal
 from pydantic import BaseModel
 from auth import verify_token
@@ -13,7 +13,7 @@ class SinhVienSchema(BaseModel):
     lop: str
 
 @router.post("/sinhvien")
-def create_sinhvien(sinhvien: SinhVienSchema,token: str):
+def create_sinhvien(sinhvien: SinhVienSchema,token: str=Header(None)):
     token= token.replace("Bearer ","")
     if not verify_token(token):
         return {"message":"Token không hợp lệ"}
@@ -25,7 +25,7 @@ def create_sinhvien(sinhvien: SinhVienSchema,token: str):
     return {"message":"Sinh viên đã được tạo"}
 
 @router.get("/sinhvien/{id}")
-def get_sinhvien(id: int ,token: str):
+def get_sinhvien(id: int ,token: str=Header(None)):
     token= token.replace("Bearer ","")
     if not verify_token(token):
         return {"message":"Token không hợp lệ"}
@@ -34,8 +34,17 @@ def get_sinhvien(id: int ,token: str):
     db.close()
     return sinhvien
 
+@router.get("/sinhvien")
+def get_allsinhvien(token: str=Header(None)):
+    token= token.replace("Bearer ","")
+    if not verify_token(token):
+        return {"message":"Token không hợp lệ"}
+    db=SessionLocal()
+    sinhviens=db.query(SinhVien).all()
+    db.close()
+    return {"sinhviens":sinhviens}
 @router.put("/sinhvien/update/{id}")
-def update_sinhvien(id: int, sinhvien: SinhVienSchema, token: str):
+def update_sinhvien(id: int, sinhvien: SinhVienSchema, token: str=Header(None)):
     token = token.replace("Bearer ", "")
     if not verify_token(token):
         return {"message": "Token không hợp lệ"}
@@ -50,7 +59,7 @@ def update_sinhvien(id: int, sinhvien: SinhVienSchema, token: str):
     return {"message": "Sinh viên đã được cập nhật"}
 
 @router.delete("/sinhvien/delete/{id}")
-def delete_sinhvien(id: int, token: str):
+def delete_sinhvien(id: int, token: str=Header(None)):
     token = token.replace("Bearer ", "")
     if not verify_token(token):
         return {"message": "Token không hợp lệ"}
