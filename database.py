@@ -1,9 +1,15 @@
-from sqlalchemy import create_engine, true;
-from sqlalchemy.orm import sessionmaker,DeclarativeBase
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from dotenv import load_dotenv
+import os
 
-engine=create_engine("sqlite:///sinhviens.db")
+load_dotenv()  # đọc file .env
 
-SessionLocal=sessionmaker(bind=engine)
+engine = create_engine(
+    f"postgresql://postgres:{os.getenv('DB_PASSWORD')}@localhost/sinhvien_db"
+)
+
+SessionLocal = sessionmaker(bind=engine)
 
 class Base(DeclarativeBase):
     pass
