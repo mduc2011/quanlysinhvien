@@ -6,7 +6,7 @@ import os
 load_dotenv()  # đọc file .env
 
 engine = create_engine(
-    f"postgresql://postgres:{os.getenv('DB_PASSWORD')}@localhost/sinhvien_db"
+    f"postgresql://postgres:duc20112007@localhost/sinhvien_db"
 )
 
 SessionLocal = sessionmaker(bind=engine)
